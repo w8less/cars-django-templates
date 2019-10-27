@@ -1,0 +1,42 @@
+<div class="modal" id="edit-profile">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form" action="{% url 'auth:profile-update' profile.id %}" method="POST">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Редактировать пользователя</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="text" name="name" class="form-control" placeholder="Имя" value="{{ profile.name }}" required>
+                    <input type="email" name="email" class="form-control" placeholder="Email" value="{{ profile.email }}" required>
+                    <input type="phone" name="phone" class="form-control" id="phone" placeholder="Номер телефона" value="{{ profile.get_phone_normal }}" required>
+                    <select class="form-control" name="profile_type" required>
+                        <option value="0" {% if profile.profile_type == 0 %}selected{% endif %}>АвтоБизнесмен</option>
+                        <option value="1" {% if profile.profile_type == 1 %}selected{% endif %}>Автомобильная компания</option>
+                        <option value="2" {% if profile.profile_type == 2 %}selected{% endif %}>Частное лицо</option>
+                    </select>
+                    <select class="form-control" name="plan_type" required>
+                        <option value="0" {% if profile.plan_type == 0 %}selected{% endif %}>Бесплатный</option>
+                        <option value="1" {% if profile.plan_type == 1 %}selected{% endif %}>Премиум</option>
+                        <option value="2" {% if profile.plan_type == 2 %}selected{% endif %}>PRO</option>
+                    </select>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Оплачен до</span>
+                        </div>
+                        <input type="datetime" name="expired" id="datetime" class="form-control" placeholder="Оплачен до" value="{{ profile.expired|date:'Y-m-d H:i:s' }}" required>
+                    </div>
+                    <textarea name="comment" class="form-control" rows="5" placeholder="Комментарий">{{ profile.comment }}</textarea>
+                </div>
+
+                <div class="modal-footer btn-block">
+                    <button type="submit" class="btn btn-outline-success btn-block">Сохранить</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

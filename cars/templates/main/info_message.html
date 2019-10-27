@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load info-message %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock styles %}
+
+{% block content %}
+    <div class="container">
+        <button class="btn btn-lg btn-block btn-outline-success" data-toggle="modal" data-target="#message">Уведомление на всех страницах</button>
+        <button class="btn btn-lg btn-block btn-outline-success" data-toggle="modal" data-target="#message-notitify">Уведомление в колокольчик</button>
+    </div>
+{% endblock content %}
+
+{% block modals %}
+    <div class="modal" id="message">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form" action="{% url 'auth:info-message' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Уведомление на всех страницах</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    {% info_message as message %}
+                    <textarea class="form-control" name="message" rows="5" placeholder="Текст сообщения">{{ message }}</textarea>
+                </div>
+
+                <div class="modal-footer btn-block">
+                    <button type="submit" class="btn btn-outline-success btn-block">Опубликовать</button>
+                </div>
+
+            </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="message-notitify">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form" action="#">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Уведомление в колокольчик</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <textarea class="form-control" name="message" rows="5" placeholder="Текст сообщения" required autofocus></textarea>
+                    <input type="hidden" name="chat_id" value="{{ profile.telegram_id }}">
+                    <input type="hidden" name="pk" value="{{ profile.pk }}">
+                </div>
+
+                <div class="modal-footer btn-block">
+                    <button type="submit" class="btn btn-outline-success btn-block">Отправить</button>
+                </div>
+
+            </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock modals %}

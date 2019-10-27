@@ -1,0 +1,45 @@
+<div class="modal fade right" id="pay" tabindex="-1" data-backdrop="false">
+    <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
+        <form action="{% url 'order:set' %}" method="POST">
+            {% csrf_token %}
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p class="heading lead">Пополнить аккаунт ПРЕМИУМ на</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" id="my_form">
+                    {% for plan in premium %}
+                    <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="{{ plan.id }}" name="plan" value="{{ plan.id }}" required>
+                        <label class="custom-control-label" for="{{ plan.id }}">{{ plan.name }} {{ plan.price }}</label>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <button class="btn btn-sm btn-secondary btn-block" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Оплатить через терминал
+                    </button>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <div class="text-center">
+                                Оплатить можно любым удобным способом на карту <br>ПриватБанка: <strong>4731 1856 0627 6431</strong><br>
+                                Получатель <strong>Сахно Михаил Николаевич</strong>.<br>
+                                В комментарии к платежу укажите свой номер телефона<br><strong>{{ user.get_phone_normal }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" id="confirm_payment" onClick="pay()" class="btn btn-primary waves-effect waves-light">
+                        Оплатить
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

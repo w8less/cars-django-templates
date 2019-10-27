@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock styles %}
+
+{% block content %}
+    <section id="filter">
+        <div class="container">
+            <div class="filter_wrp">
+                <div class="wrap">
+                    <div class="acc-info-wrp">
+                        <div class="left-wrp">
+                            <div class="paymant-status">
+                                {% if user.is_paid %}
+                                    <label><b>{{ user.get_plan_type_display }} до:</b> {{ user.expired|date:'d.m.Y' }}</label>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pay">
+                                            Продлить
+                                        </button>
+                                        {% if user.plan_type == 1 %}
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#pay">
+                                            Купить PRO
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <label>Не уплачено </label>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pay">
+                                        Пополнить
+                                    </button>
+                                {% endif %}
+                            </div>
+                            <div class="">
+                                <b>Дата последнего входа:</b> {{ user.last_login|date:'d.m.Y' }}
+                            </div>
+                            <div class="">
+                                <b>Дата регистрации:</b> {{ user.date_joined|date:'d.m.Y' }}
+                            </div>
+                        </div>
+                        <div class="right-wrp">
+                            <form class="input-group" style="width:100%" method="POST">
+                                {% csrf_token %}
+                                <input class="form-control" type="text" name="name" value="{{ user.name }}">
+                                <button type="submit" class="btn btn-warning">Сохранить</button>
+                            </form>
+                            <input type="email" class="form-control" id="email" value="{{ user.email }}" readonly>
+                            <input type="text" class="form-control" id="phone" value="{{ user.get_phone_normal }}" readonly>
+                            <input type="text" class="form-control" value="{{user.get_profile_type_display}}" readonly>
+                            {% if user.telegram_id %}
+                            <div class="btn btn-block btn-success disabled">
+                                <img style="height: 30px" src="https://icon-library.net/images/icon-telegram/icon-telegram-27.jpg">
+                                Подключен
+                            </div>
+                            {% else %}
+                            <div class="btn btn-block btn-danger" data-toggle="modal" data-target="#telegram">
+                                <img style="height: 30px" src="https://icon-library.net/images/icon-telegram/icon-telegram-27.jpg">
+                                Подключить
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if filter_list %}
+    <section id="filter">
+        <div class="container">
+            <div class="filter_wrp">
+                <div class="wrap">
+                Фильтры
+                {% for filter_item in filter_list %}
+                    <div class="card">
+                        <div class="card-body">
+                            {{ filter_item.name }}
+                            {% if filter_item.description %}<p>{{ filter_item.description }}</p>{% endif %}
+                            <div class="form-group">
+                                <a class="btn btn-primary btn-sm" href="{{ filter_item.get_url }}" target="blank">Просмотреть по фильтру</a>
+                                <form action="{% url 'auth:user-filter-change' %}" method="POST">{% csrf_token %}
+                                {% if filter_item.is_active %}
+                                    <button type="submit" name="filter_id" value="{{ filter_item.id }}" class="btn btn-success btn-sm">Включен</button>
+                                {% else %}
+                                    <button type="submit" name="filter_id" value="{{ filter_item.id }}" class="btn btn-danger btn-sm">Выключен</button>
+                                {% endif %}
+                                </form>
+                                <a class="btn btn-warning btn-sm" href="{% url 'auth:user-filter-update' filter_item.id %}">Редактировать</a>
+                                <a class="btn btn-danger btn-sm" href="{{ filter_item.get_url }}" target="blank">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    {% if comments %}
+        <section id="filter">
+            <div class="container">
+                <div class="filter_wrp">
+                    <div class="wrap col-6 offset-3 row">
+                        Комментарии:<br>
+                        {% for comment in comments %}
+                            {{comment}}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock content %}
+
+{% block modals %}
+
+    {% if not user.is_paid %}
+        {% include 'users/modals/pay_all.html' %}
+    {% elif user.is_paid and user.plan_type == 1 %}
+        {% include 'users/modals/pay_premium.html' %}
+    {% elif user.is_paid and user.plan_type == 2 %}
+        {% include 'users/modals/pay_pro.html' %}
+    {% endif %}
+    {% if not user.telegram_id %}
+        {% include 'users/modals/telegram_connect.html' %}
+    {% endif %}
+{% endblock modals %}
+
+
+{% block scripts %}
+    <script src="{% static 'js/jquery.mask.min.js' %}"></script>
+    <script src="{% static 'js/liqpay.js' %}"></script>
+{% endblock scripts %}

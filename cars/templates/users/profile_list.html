@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock styles %}
+
+{% block content %}
+    <div class="container">
+        <button class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#telegram">Отправить сообщение в Telegram</button>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ИМЯ</th>
+                    <th scope="col">E-MAIL</th>
+                    <th scope="col">ТЕЛЕФОН</th>
+                    <th scope="col">УВЕДОМЛЕНИЯ</th>
+                    <th scope="col">ТЕЛЕГРАМ</th>
+                    <th scope="col">ВНЕС ДЕНЕГ</th>
+                    <th scope="col">ПОСЛЕДНИЙ ВХОД</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in profiles %}
+                    <tr>
+                        <th scope="row">{{ profile.id }}</th>
+                        <td>{{ profile.name }}{% if profile.comment %} <i class="fa fa-comment" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{{ profile.comment }}"></i>{% endif %}</td>
+                        <td>{{ profile.email }}</td>
+                        <td>{{ profile.get_phone_normal }}</td>
+                        <td>{{ profile.userfilter_set.count }}</td>
+                        <td>{% if profile.telegram_id %}+{% else %}-{% endif %}</td>
+                        <td>{{ profile.spent_money }} грн.</td>
+                        <td>{{ profile.last_login|date:'Y-m-d H:i:s' }}</td>
+                        <td><a class="btn btn-sm btn-outline-primary" href="{{ profile.get_absolute_url }}">Просмотреть профиль</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
+
+{% block modals %}
+    {% include 'users/modals/send_telegram.html' %}
+{% endblock modals %}

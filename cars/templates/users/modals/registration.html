@@ -1,0 +1,41 @@
+{% load static %}
+
+<div class="modal" id="registration">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <form class="form" action="{% url 'auth:registration' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-header">
+                <h4 class="modal-title">Регистрация</h4>
+                <button class="close" type="button" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <input class="form-control" type="text" name="name" placeholder="Имя" autofocus required>
+                <select class="form-control" name="profile_type" required>
+                    <option selected disabled value="">Кто Вы?</option>
+                    <option value="0">АвтоБизнесмен</option>
+                    <option value="1">Автомобильная компания</option>
+                    <option value="2">Частное лицо</option>
+                </select>
+                <input class="form-control" type="email" name="email" placeholder="Email" required>
+                <input class="form-control" type="password" name="password" placeholder="Пароль" required>
+                <input class="form-control" id="phone" type="phone" name="phone" placeholder="Телефон" required>
+                <button class="form-control btn btn-warning btn-sm" id="code-button" type="button" onClick="send_code()">Отправить код подтверждения</button>
+                <input class="form-control" id="code" type="text" name="code" placeholder="Код подтверждения" required>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-success btn-block" type="submit">Зарегестрироваться</button>
+            </div>
+
+        </form>
+
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+    <script src="{% static 'js/send_code.js' %}"></script>
+{% endblock scripts %}

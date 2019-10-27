@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load filter_selects %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cars_list.css' %}"> 
+{% endblock styles %}
+
+{% block content %}
+    <section id="filter">
+        <div class="container">
+            <form method="get">
+                <div class="filter_wrp">
+                    <div class="wrap">
+                        <div class="left_block"></div>
+                        <div class="center_block">
+                            <div class="fas">
+                                <input type="phone" name="phone" class="form-control" id="phone" placeholder="Номер телефона" autofocus required>
+                            </div>
+                        </div>
+                        <div class="right_block">
+                            <div class="button">
+                                <button class="Search" type="submit">Найти</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <section id="car_list">
+        <div class="container">
+            {% include 'main/components/car_list.html' %}
+            <div class="btn_see_more">
+                {% if prev_url %}
+                    <a href="{{ prev_url }}"><i class="fas fa-arrow-left"></i></a>
+                {% endif %}
+                {% if page and next_url %}
+                    &nbsp;{{ page }}&nbsp;
+                {% endif %}
+                {% if next_url %}
+                    <a href="{{ next_url }}"><i class="fas fa-arrow-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

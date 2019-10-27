@@ -1,0 +1,40 @@
+<div class="modal" id="telegram">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <form class="form" action="{% url 'telegram:send-message' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-header">
+                <h4 class="modal-title">Отправить сообщение в Telegram</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Перейдите в <a href="https://telegram.me/carstest_bot?start={{ user.id }}" target="blank">Telegram</a></p>
+                <p>Либо получите СМС с ссылкой на активацию.</p>
+            </div>
+
+            <div class="modal-footer btn-block">
+                <button type="button" id="sms-button" class="btn btn-outline-success btn-block" onClick="telegram_connect()">Получить СМС</button>
+            </div>
+
+        </form>
+        <script>
+            function telegram_connect() {
+                let csrf_token = $('[name="csrfmiddlewaretoken"]')[0].value;
+                $.ajax({
+                    url: '/auth/telegram/connect/',
+                    type: 'POST',
+                    data: { csrfmiddlewaretoken: csrf_token },
+                })
+                .done(function() {
+                    $('#sms-button').text('СМС отправлено! Ожидайте.').attr('disabled', true).addClass('btn-success');
+                    setTimeout(function() {
+                        $(".close").trigger('click');
+                    }, 1000);
+                });
+            }
+        </script>
+        </div>
+    </div>
+</div>

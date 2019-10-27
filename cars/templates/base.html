@@ -1,0 +1,47 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/css/swiper.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/all_car.js' %}"></script>
+    {% block styles %}{% endblock styles %}
+</head>
+<body>
+
+    <header>
+        {% include 'components/header.html' %}
+    </header>
+
+    {% block content %}{% endblock content %}
+
+    <footer>
+        {% include 'components/footer.html' %}
+    </footer>
+    {% if not request.user.is_authenticated %}
+        {% include "users/modals/login.html" %}
+        {% include "users/modals/registration.html" %}
+    {% endif %}
+    {% block modals %}{% endblock modals %}
+    <script src="{% static 'js/year-select.js' %}"></script>
+    <script src="{% static 'js/jquery.elimore.js' %}"></script>
+    <script src="{% static 'js/Chart.js' %}"></script>
+    <script src="{% static 'js/global.js' %}"></script>
+    <script src="{% static 'js/easing.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.ui.totop.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.mask.min.js' %}"></script>
+    {% block scripts %}{% endblock scripts %}
+</body>
+</html>

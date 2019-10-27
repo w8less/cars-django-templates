@@ -1,0 +1,26 @@
+<div class="modal" id="telegram">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <form class="form" action="{% url 'telegram:send-message' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-header">
+                <h4 class="modal-title">Отправить сообщение в Telegram</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <textarea class="form-control" name="message" rows="5" placeholder="Текст сообщения" required autofocus></textarea>
+                <input type="hidden" name="chat_id" value="{{ profile.telegram_id }}">
+                <input type="hidden" name="pk" value="{{ profile.pk }}">
+            </div>
+
+            <div class="modal-footer btn-block">
+                <button type="submit" class="btn btn-outline-success btn-block">Отправить</button>
+            </div>
+
+        </form>
+
+        </div>
+    </div>
+</div>

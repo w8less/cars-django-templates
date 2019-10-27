@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load filter_selects %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cars_list.css' %}"> 
+{% endblock styles %}
+
+{% block content %}
+    <section id="filter">
+        <div class="container">
+            <form id="search-form" action="{% url 'all-car' %}" method="get">
+                <div class="filter_wrp all">
+                    <div class="wrap">
+                        <div class="form-flex brand-line">
+                            <div class="form-select">
+                                <label for="brand">Марка авто</label>
+                                <select id="brand" name="model__mark">
+                                    <option selected disabled>Все авто</option>
+                                    {% marks as marks %}
+                                    {% for mark in marks %}
+                                        <option value="{{ mark.id }}">{{ mark.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-select">
+                                <label for="brand_type">Модель авто</label>
+                                <select id="brand_type" name="model">
+                                    <option selected disabled>Все модели</option>
+                                </select>
+                            </div>
+                            <div class="add-wrap">
+                                <div id="addLine"><span>Добавить марку</span></div>
+                            </div>
+                            <div class="dell-wrap">
+                                <div class="dellLine"></div>
+                            </div>
+                        </div>
+                        <div class="form-flex price-line">
+                            <div class="form-select">
+                                <label for="reg">Регион поиска</label>
+                                <select id="reg" name="location">
+                                    {% location request as location_list %}
+                                    {% for location in location_list %}
+                                        <option {{ location.selected }} {{location.value}}>{{ location.text|capfirst }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-select">
+                                <label for="kpp">Вид КПП</label>
+                                <select id="kpp" name="gearbox">
+                                    {% gearbox request as gearbox_list %}
+                                    {% for gearbox in gearbox_list %}
+                                        <option {{ gearbox.selected }} {{gearbox.value}}>{{ gearbox.text }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-wrap twice twice-left">
+                                <label for="price">Цена от/до $</label>
+                                <input id="price" type="number" name="price__gte" placeholder="Цена от" class="form-input" value="{{ request.GET.price__gte }}">
+                            </div>
+                            <div class="form-wrap twice twice-top">
+                                <input type="number" name="price__lte" placeholder="Цена до" class="form-input" value="{{ request.GET.price__lte }}">
+                            </div>
+                        </div>
+                        <div class="form-flex year-line">
+                            <div class="form-select">
+                                <label for="registr">Регистрация</label>
+                                <select id="registr" name="cleared">
+                                    {% cleared request as cleared_list %}
+                                    {% for cleared in cleared_list %}
+                                        <option {{ cleared.selected }} {{cleared.value}}>{{ cleared.text }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-select">
+                                <label for="damage">ДТП / без ДТП</label>
+                                <select id="damage" name="dtp">
+                                    {% dtp request as dtp_list %}
+                                    {% for dtp in dtp_list %}
+                                        <option {{ dtp.selected }} {{dtp.value}}>{{ dtp.text }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-wrap twice twice-left">
+                                <label for="year">Год от/до</label>
+                                <input id="year" type="number" name="year__gte" placeholder="Год от" class="form-input" value="{{ request.GET.year__gte }}">
+                            </div>
+                            <div class="form-wrap twice twice-top">
+                                <input type="number" name="year__lte" placeholder="Год до" class="form-input" value="{{ request.GET.year__lte }}">
+                            </div>
+                        </div>
+                        <div class="form-flex">
+                            <div class="form-wrap wrap-radio">
+                                <div>
+                                    <input type="checkbox" name="seller__is_blocked" id="block" value="0" {% if request.GET.seller__is_blocked %}checked{% endif %}>
+                                    <label for="block">Исключить заблокированных</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="seller__dealer" id="dil" value="0" {% if request.GET.seller__dealer %}checked{% endif %}>
+                                    <label for="dil">Исключить диллеров</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter-bottom-block">
+                            <div class="favorite">
+                                <div><button><div class="favorite-img"></div><span>в избранное</span></button></div>
+                                <div><a class="favorite-link" href="#">Перейти к избранным</a></div>
+                            </div>
+                            <div class="search-wrap">
+                                <a href="#">расширенный поиск</a>
+                                <a href="javascript:{}" onclick="$('#search-form').submit()">найти</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <section id="car_list">
+        <div class="container">
+            {% include 'main/components/car_list.html' %}
+            <div class="btn_see_more">
+                {% if prev_url %}
+                    <a href="{{ prev_url }}"><i class="fas fa-arrow-left"></i></a>
+                {% endif %}
+                {% if page and next_url %}
+                    &nbsp;{{ page }}&nbsp;
+                {% endif %}
+                {% if next_url %}
+                    <a href="{{ next_url }}"><i class="fas fa-arrow-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block scripts %}
+
+{% endblock scripts %}

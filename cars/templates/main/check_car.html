@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cars_list.css' %}">  
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/css/intlTelInput.css"> 
+
+{% endblock styles %}
+
+{% block content %}
+<section id="check-cars">
+    <div class="container">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">По номеру телефона</a></li>
+                <li><a href="#tabs-2">По гос-номеру</a></li>
+                <li><a href="#tabs-3">По VIN номеру</a></li>
+            </ul>
+            <div id="tabs-1">
+                <div class="tab-title-my">Поиск авто по номеру телефона</div>
+                <form class="int-form">
+                    <input type="tel" id="phone" class="input-tabs">
+                    <button class="submit-int-tel" type="submit"> Найти </button>
+                </form>
+            </div>
+            <div id="tabs-2">
+                <div class="tab-title-my">Поиск авто по гос-номеру </div>
+                <form class="int-form"> 
+                    <input type="text" id="gos" class="input-tabs" placeholder="по гос-номеру">
+                    <button class="submit-int-tel" type="submit"> Найти </button>
+                </form>
+            </div>
+            <div id="tabs-3">
+                <div class="tab-title-my">Поиск авто VIN номеру</div>
+                <form class="int-form">
+                    <input type="text" id="vin" class="input-tabs" placeholder="по VIN номеру">
+                    <button class="submit-int-tel" type="submit"> Найти </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="car_list">
+    <div class="container">
+        {% include 'main/components/car_list.html' %}
+        <!-- <div class="btn_see_more">
+            {% if prev_url %}
+                <a href="{{ prev_url }}"><i class="fas fa-arrow-left"></i></a>
+            {% endif %}
+            {% if page and next_url %}
+                &nbsp;{{ page }}&nbsp;
+            {% endif %}
+            {% if next_url %}
+                <a href="{{ next_url }}"><i class="fas fa-arrow-right"></i></a>
+            {% endif %}
+        </div> -->
+    </div>
+</section>
+{% include 'main/components/properties.html' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.js"></script>
+<script rel="stylesheet" href="{% static 'js/check-car.js' %}"></script>
+<script>
+    var inp = document.querySelector("#phone");
+    var iti = window.intlTelInput(inp , {
+        utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js',
+        autoHideDialCode: false,
+        geoIpLookup: function(success, failure) {
+            $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+                var countryCode = (resp && resp.country) ? resp.country : "";
+                success(countryCode);
+            });
+        },
+        initialCountry: 'ua',
+        nationalMode: 'false',
+        onlyCountries: ["ua", "ru", "us", "de"]
+    })
+</script>  
+{% endblock content %}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <g id="Group_72" data-name="Group 72" transform="translate(-1232 -16)">
+    <rect id="Rectangle_7" data-name="Rectangle 7" width="40" height="40" transform="translate(1232 16)" fill="rgba(96,96,96,0)"/>
+    <g id="star" transform="translate(1242 25.548)">
+      <path id="Path_78" data-name="Path 78" d="M10.473.781,13.017,7.1l6.513.587a.545.545,0,0,1,.293.943l-4.94,4.488,1.48,6.677a.519.519,0,0,1-.765.582L10,16.833l-5.6,3.54a.519.519,0,0,1-.765-.582l1.48-6.677L.178,8.624A.544.544,0,0,1,.47,7.681l6.513-.587L9.527.781a.5.5,0,0,1,.946,0Z" transform="translate(0 0)" fill="#606060"/>
+    </g>
+  </g>
+</svg>

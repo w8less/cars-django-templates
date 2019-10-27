@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load filter_selects %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock styles %}
+
+{% block content %}
+<section id="filter">
+    <div class="container">
+        <form method="POST">{% csrf_token %}
+            <div class="filter_wrp">
+                <div class="wrap col-12">
+                    <div class="left_block">
+                        <div class="fas fa-caret-down">
+                            <select class="form-control" name="model__mark" id="filter_brand" required>
+                                <option selected disabled value="">Выбери марку</option>
+                                {% marks as marks %}
+                                {% for mark in marks %}
+                                <option value="{{ mark.id }}">{{ mark.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="model-down"></div>
+                        <div class="button">
+                            <button class="Search" type="submit">Анализ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<section id="filter" class="graph" style="display: none;">
+    <div class="container">
+        <div class="filter_wrp">
+            <div class="wrap col-12">
+                <canvas id="chLine"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/analitic-mileage.js' %}" type="text/javascript"></script>
+{% endblock scripts %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load filter_selects %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock styles %}
+
+{% block content %}
+    <section id="filter">
+        <div class="container">
+            <div class="filter_wrp">
+                <div class="wrap">
+                    <div class="card">
+                        <form class="card-body">
+                            <div class="fas">
+                                <input class="form-control" type="text" name="name" placeholder="Название" value="{{ filter_item.name }}">
+                                <textarea class="form-control" name="description" rows="2" placeholder="Описание">{{ filter_item.description }}</textarea>
+                            </div>
+                            <div class="fas fa-caret-down">
+                                <select class="form-control" name="model__mark" id="filter_brand">
+                                    <option selected disabled>Марка</option>
+                                    {% marks as marks %}
+                                    {% for mark in marks %}
+                                    <option value="{{ mark.id }}">{{ mark.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="fas fa-caret-down">
+                                <select class="form-control" name="model" id="filter_model">
+                                    <option selected disabled>Модель</option>
+                                </select>
+                            </div>
+                            <div class="fas fa-caret-down">
+                                <select class="form-control" name="gearbox" id="filter_gearbox">
+                                    <option selected disabled>КПП</option>
+                                    {% gearboxs as gearboxs %}
+                                    {% for gearbox in gearboxs %}
+                                    <option value="{{ gearbox.id }}">{{ gearbox.name | title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="fas fa-caret-down">
+                                <select class="form-control" name="location" id="filter_region">
+                                    <option selected disabled>Регион</option>
+                                    {% locations as locations %}
+                                    {% for location in locations %}
+                                    <option value="{{ location.id }}">{{ location.name | title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="fas fa-caret-down unshow">
+                                <label for="year">Год</label>
+                                <div class="year_pick">
+                                    <div class="fas fa-caret-down">
+                                        <select class="yearselect" name="year__gte"></select>
+                                    </div>
+                                    <div class="fas fa-caret-down">
+                                        <select class="yrselectdesc" name="year__lte"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fas fa-caret-down unshow">
+                                <label for="price">Цена</label>
+                                <div class="price_pick">
+                                    <div class="fas fa-caret-down">
+                                        <input type="text" pattern="^[ 0-9]+$" name="price__gte" placeholder="от">
+                                    </div>
+                                    <div class="fas fa-caret-down">
+                                        <input type="text" pattern="^[ 0-9]+$" name="price__lte" placeholder="до">
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset>
+                                <legend>ДТП</legend>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="dtp" value="" checked>Все
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="dtp" value="0">Без ДТП
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="dtp" value="1">После ДТП
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="blocked" id="blocked">
+                                <label class="form-check-label" for="blocked">Исключить заблокированных</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="dealers" id="dealers">
+                                <label class="form-check-label" for="dealers">Исключить диллеров</label>
+                            </div>
+                            <div class="fas">
+                                <button class="form-control btn btn-success" type="submit">Сохранить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+
+{% block scripts %}
+    <script src="{% static 'js/jquery.mask.min.js' %}"></script>
+{% endblock scripts %}

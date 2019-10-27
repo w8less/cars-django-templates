@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load filter_selects %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cars_list.css' %}"> 
+{% endblock styles %}
+
+{% block content %}
+    <section id="title">
+        <div class="container">
+            <h1>Избранные ({{ car_list|length }})</h1>
+        </div>
+    </section>
+    <section id="filter">
+        {% comment %} <div class="container">
+            <form>
+                <div class="filter_wrp">
+                    <div class="wrap">
+                        <div class="left_block">
+                            <div class="fas fa-caret-down">
+                                <select class="form-control" name="model__mark" id="filter_brand">
+                                    <option selected disabled>Марка</option>
+                                    {% marks as marks %}
+                                    {% for mark in marks %}
+                                    <option value="{{ mark.id }}">{{ mark.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="fas fa-caret-down">
+                                <select class="form-control" name="model" id="filter_model">
+                                    <option selected disabled>Модель</option>
+                                </select>
+                            </div>
+                            <div class="fas fa-caret-down">
+                                <select class="form-control" name="gearbox" id="filter_gearbox">
+                                    <option selected disabled>КПП</option>
+                                    {% gearboxs as gearboxs %}
+                                    {% for gearbox in gearboxs %}
+                                    <option value="{{ gearbox.id }}">{{ gearbox.name | title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="centr_block">
+                            <div class="fas fa-caret-down">
+                                <select class="form-control" name="location" id="filter_region">
+                                    <option selected disabled>Регион</option>
+                                    {% locations as locations %}
+                                    {% for location in locations %}
+                                    <option value="{{ location.id }}">{{ location.name | title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="fas fa-caret-down unshow">
+                                <label for="year">Год</label>
+                                <div class="year_pick">
+                                    <div class="fas fa-caret-down">
+                                        <select class="yearselect" name="year__gte" id=""></select>
+                                    </div>
+                                    <div class="fas fa-caret-down">
+                                        <select class="yrselectdesc" name="year__lte" id=""></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fas fa-caret-down unshow">
+                                <label for="price">Цена</label>
+                                <div class="price_pick">
+                                    <div class="fas fa-caret-down">
+                                        <input type="text" pattern="^[ 0-9]+$" name="price__gte" id="" placeholder="от">
+                                    </div>
+                                    <div class="fas fa-caret-down">
+                                        <input type="text" pattern="^[ 0-9]+$" name="price__lte" id="" placeholder="до">
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="right_block">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="dealers" id="dealers">
+                                <label class="form-check-label" for="dealers">Исключить диллеров</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="blocked" id="blocked">
+                                <label class="form-check-label" for="blocked">Исключить заблокированных</label>
+                            </div>
+                            <div class="button">
+                                <button class="Search" type="submit">Найти</button>
+                            </div>
+                            <div class="button">
+                                <button class="advanced_Search" type="submit">Расширеный поиск</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div> {% endcomment %}
+    </section>
+    <section id="car_list">
+        <div class="container">
+            {% include 'main/components/car_list.html' %}
+            <div class="btn_see_more">
+                {% if prev_url %}
+                    <a href="{{ prev_url }}"><i class="fas fa-arrow-left"></i></a>
+                {% endif %}
+                {% if page %}
+                    &nbsp;{{ page }}&nbsp;
+                {% endif %}
+                {% if next_page %}
+                    <a href="{{ next_url }}"><i class="fas fa-arrow-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $('#filter_brand').change(function () {
+            let mark_id = $(this).val()
+            console.log(mark_id)
+            let url_path = '/api/models/' + mark_id
+            $.get(url_path, function (data) {
+                console.log(data)
+                $('#filter_model').html('<option selected value="">Не выбрано</option>')
+                data.models.forEach(function (element) {
+                    $('#filter_model').append('<option value="' + element.id + '">' + element.name + '</option>')
+                })
+            })
+        })
+    </script>
+{% endblock scripts %}

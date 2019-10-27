@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock styles %}
+
+{% block content %}
+    <div class="container">
+        <div class="btn-group btn-block">
+            <a class="btn btn-primary btn-block" href="{% url 'auth:profile-list' %}" style="margin-top: .5rem;">< Все пользователи</a>
+            <button {% if not profile.telegram_id %}class="btn btn-block disabled btn-outline-secondary"{% else %}class="btn btn-block btn-outline-success" data-toggle="modal" data-target="#telegram"{% endif %}>Отправить сообщение в Telegram</button>
+            <button class="btn btn-outline-warning btn-block" data-toggle="modal" data-target="#edit-profile">Редактировать пользователя</button>
+            <button class="btn btn-outline-danger btn-block" data-toggle="modal" data-target="#delete-profile">Удалить пользователя</button>
+        </div>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th scope="row">ID</th>
+                    <td>{{ profile.id }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">ИМЯ</th>
+                    <td>{{ profile.name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">E-MAIL</th>
+                    <td>{{ profile.email }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">ТЕЛЕФОН</th>
+                    <td>{{ profile.get_phone_normal }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">ДАТА РЕГИСТРАЦИИ</th>
+                    <td>{{ profile.date_joined|date:'Y-m-d H:i:s' }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">ПОСЛЕДНИЙ ВХОД</th>
+                    <td>{{ profile.last_login|date:'Y-m-d H:i:s' }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">TELEGRAM</th>
+                    <td>{{ profile.telegram_id }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">ОПЛАЧЕН ДО</th>
+                    <td>{{ profile.expired|date:'Y-m-d H:i:s' }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">ВНЕС В КАССУ</th>
+                    <td>{{ profile.spent_money }} грн.</td>
+                </tr>
+                <tr>
+                    <th scope="row">ТИП</th>
+                    <td>{{ profile.get_profile_type_display }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">КОММЕНТАРИЙ</th>
+                    <td>{{ profile.comment }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
+
+{% block modals %}
+    {% include 'users/modals/send_telegram.html' %}
+    {% include 'users/modals/profile_update.html' %}
+    {% include 'users/modals/confirm_delete.html' %}
+{% endblock modals %}

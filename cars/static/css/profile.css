@@ -1,0 +1,35 @@
+section#filter .filter_wrp .wrap{
+    width: 100%;
+    flex-direction: column;
+}
+.paymant-status button{
+    padding: 2px 10px !important;
+}
+.paymant-status label {
+    margin: 0 !important;
+    margin-right: 8px !important; 
+}
+.acc-info-wrp{
+    display: flex;
+    margin-top: 15px;
+}
+.left-wrp{
+    width: 30%;
+}
+
+.right-wrp{
+    width: 70%;
+}
+
+@media(max-width: 768px){
+    .acc-info-wrp{
+        flex-wrap: wrap;
+    }
+    .left-wrp,
+    .right-wrp{
+        width: 100%;
+    }
+    .left-wrp{
+        margin-bottom: 15px;
+    }
+}

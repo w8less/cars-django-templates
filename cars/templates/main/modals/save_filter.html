@@ -1,0 +1,33 @@
+<div class="modal" id="save-filter">
+    <div class="modal-dialog">
+        <form class="modal-content">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h4 class="modal-title">Получать уведомления</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <input id="name" class="form-control" type="text" name="title" placeholder="Название (не обязательно)">
+                <textarea id="description" class="form-control" name="message" rows="2" placeholder="Описание (не обязательно)"></textarea>
+            </div>
+
+            <div class="modal-footer btn-block">
+                <button type="button" onClick="saveFilter()" class="btn btn-outline-success btn-block">Добавить уведомление</button>
+            </div>
+            <script>
+                function saveFilter() {
+                    const csrf_token = $('[name="csrfmiddlewaretoken"]')[0].value;
+                    const name = $('#name')[0].value;
+                    const description = $('#description')[0].value;
+                    {% comment %} $('.modal-content').find('input').each(function(e) {
+                        console.log(this.name, this.value);
+                    }) {% endcomment %}
+                    let form_data = $('#search-form').serializeArray();
+                    console.log(typeof form_data, name, description);
+                }
+            </script>
+
+        </form>
+    </div>
+</div>

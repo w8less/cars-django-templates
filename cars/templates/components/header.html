@@ -1,0 +1,54 @@
+{% load info-message %}
+
+<div class="container">
+    <div class="header_wrp">
+        <div class="logo">
+            <span><i class="fas fa-bars"></i></span>
+            <a href="{% url 'home' %}">
+                <div></div>
+            </a>
+        </div>
+        <ul>
+            <a href="{% url 'all-car' %}"><li>Автомобили</li></a>
+            <a href="{% url 'check_car' %}"><li>Проверить авто</li></a>
+            <li>Подробнее про 2Cars</li>
+            <li>Все для авто</li>
+        </ul>
+        <div class="user">
+            <div class="sell-car" data-toggle="tooltip" data-placement="bottom" title="Продать авто">
+                <a href="#"><img src="../../static/img/icons8-автомобиль-50 (1).png" alt=""></a>
+            </div>
+            <div data-toggle="tooltip" data-placement="bottom" title="Перейти к избранным">
+                <a class="star-head" href="{% url 'favourite' %}"><i class="fa fa-star" aria-hidden="true"></i></a>
+            </div>
+            <div data-toggle="tooltip" data-placement="bottom" title="Уведомления">
+                <i class="fa fa-bell" aria-hidden="true"></i>
+            </div>
+            {% if user.is_authenticated %}
+                <a class="photo" id="down-navigation"></a>
+            {% else %}
+                <div>
+                    <a class="login-btn-self" href="#" data-toggle="modal" data-target="#login">Вход/Регистрация</a>
+                </div>
+            {% endif %}       
+        </div>
+    </div>
+    {% info_message as message %}
+    {% if message %}
+    <div class="alert alert-warning alert-dismissible fade show">
+        <strong>{{ message }}</strong>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+</div>
+{% if user.is_authenticated %}
+<div id="menu-nav">
+    <a class="dropdown-item" href="{% url 'auth:profile' %}">Профиль</a>
+    {% if user.is_superuser %}
+        <a class="dropdown-item" href="{% url 'auth:profile-list' %}">Пользователи</a>
+        <a class="dropdown-item" href="{% url 'order:list' %}">Оплаты</a>
+        <a class="dropdown-item" href="{% url 'auth:info-message' %}">Уведомление</a>
+    {% endif %}
+    <a class="dropdown-item" href="{% url 'auth:logout' %}">Выйти</a>
+</div>
+{% endif %}
